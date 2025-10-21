@@ -37,7 +37,7 @@ const getOptions = (method, body) => {
 };
 
 export const appFetch = async (method, path, body) => {
-    // CAMBIO CLAVE: Vite usa import.meta.env y VITE_*
+
     const baseUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:8080';
 
     try {
@@ -56,6 +56,7 @@ export const appFetch = async (method, path, body) => {
 
     } catch (err) {
         networkErrorCallback?.();
-        return { ok: false, status: 0, payload: null };
+        return { ok: false, status: 0, payload: { code: 'NETWORK_ERROR', message: 'No se pudo conectar con el servidor.' },
+        };
     }
 };

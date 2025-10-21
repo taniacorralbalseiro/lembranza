@@ -15,18 +15,25 @@ export const loginFailed = (errorPayload) => ({
 export const logout = () => ({ type: actionTypes.LOGOUT });
 
 export const login = (userName, password) => async (dispatch) => {
+
+  try {
     const response = await backend.userService.login(userName, password, () => {
-        // reauth callback -> forzar logout
-        dispatch(logout());
+      // reauth callback -> forzar logout
+      dispatch(logout());
     });
 
     if (response.ok) {
-        // En tus apuntes suelen pasar el user completo en payload
-        dispatch(loginCompleted(response.payload.user));
-        // Devolvemos ok para que el componente decida navegar
-        return { ok: true };
+      // En tus apuntes suelen pasar el user completo en payload
+      dispatch(loginCompleted(response.payload.user));
+      // Devolvemos ok para que el componente decida navegar
+      return {ok: true};
     } else {
-        dispatch(loginFailed(response.payload));
-        return { ok: false, error: response.payload };
+      dispatch(loginFailed(response.payload));
+      return {ok: false, error: response.payload};
     }
+  } catch (err) {
+    const payload = { globalError: 'No se pudo conectar con el servidor.' };
+    dispatch(loginFailed(payload));
+    return { ok: false, error: payload};
+  }
 };
