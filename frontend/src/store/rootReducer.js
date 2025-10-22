@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux';
 import app from '../modules/app';
 import users from '../modules/users';
-import pacientes from "../modules/pacientes/index.js";
+import pacientes from "../modules/pacientes";
 
 const rootReducer = combineReducers({
     app: app.reducer,

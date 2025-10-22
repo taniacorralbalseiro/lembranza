@@ -41,18 +41,20 @@ export const appFetch = async (method, path, body) => {
     const baseUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:8080';
 
     try {
-        const response = await fetch(`${baseUrl}${path}`, getOptions(method, body));
-        const res = { ok: response.ok, status: response.status, payload: null };
+      const response = await fetch(`${baseUrl}${path}`, getOptions(method, body));
 
-        if (response.status === 401 && reauthenticationCallback) {
-            reauthenticationCallback();
-            return res;
-        }
+      const res = {
+        ok: response.ok,
+        status: response.status,
+        payload: null,
+        headers: { Location: response.headers.get('Location') || null }
+      };
 
-        if (isJson(response)) {
-            res.payload = await response.json();
-        }
-        return res;
+      const ct = response.headers.get('content-type') || '';
+      if (ct.includes('application/json') || ct.includes('+json')) {
+        try { res.payload = await response.json(); } catch {}
+      }
+      return res;
 
     } catch (err) {
         networkErrorCallback?.();

@@ -83,7 +83,7 @@ public class SecurityConfig {
         ));
         cors.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
         cors.setAllowedHeaders(List.of("Authorization", "Content-Type", "Accept-Language"));
-        cors.setExposedHeaders(List.of("Authorization"));
+        cors.setExposedHeaders(List.of("Authorization", "Location"));
         cors.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();

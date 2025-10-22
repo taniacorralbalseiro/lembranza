@@ -1,9 +1,17 @@
 import { appFetch } from './appFetch';
 
-/**
- * GET /api/pacientes/por-centro?centroPublicId=...&page=...&size=...
- * Devuelve Page<PacienteSummaryDto>. Aquí lo normalizamos a { items, existMoreItems }.
- */
+export const create = (dto) =>
+  appFetch('POST', '/api/pacientes', dto);
+
+export const update = (publicId, dto) =>
+  appFetch('PUT', `/api/pacientes/${publicId}`, dto);
+
+export const get = (publicId) =>
+  appFetch('GET', `/api/pacientes/${publicId}`);
+
+export const darDeBaja = (publicId) =>
+  appFetch('DELETE', `/api/pacientes/${publicId}`);
+
 export const findByCentro = ({ centroPublicId, page = 0, size = 10 }, onSuccess) => {
   if (!centroPublicId) {
     return Promise.resolve({

@@ -6,5 +6,6 @@ import * as selectors from './selectors';
 export { default as FindPacientes } from './components/FindPacientes';
 export { default as FindPacientesResult } from './components/FindPacientesResult';
 export { default as PacienteDetails } from './components/PacienteDetails';
-
+export { default as PacienteCreate } from './components/PacienteCreate';
+export { default as PacienteEdit } from './components/PacienteEdit';
 export default { actions, actionTypes, reducer, selectors };

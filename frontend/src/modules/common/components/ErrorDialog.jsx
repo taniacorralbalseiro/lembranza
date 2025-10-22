@@ -1,6 +1,6 @@
 import {useIntl, FormattedMessage} from 'react-intl';
 
-import NetworkError from '../../../backend';
+import NetworkError from '../../../backend/NetworkError';
 
 const ErrorDialog = ({error, onClose}) => {
 
@@ -36,8 +36,8 @@ const ErrorDialog = ({error, onClose}) => {
                         <p>{message}</p>
                     </div>
                     <div className="modal-footer">
-                        <button type="button" className="btn btn-primary" 
-                            data-dismiss="modal" 
+                        <button type="button" className="btn btn-primary"
+                            data-dismiss="modal"
                             onClick={onClose}>
                             <FormattedMessage id="project.global.buttons.close"/>
                         </button>

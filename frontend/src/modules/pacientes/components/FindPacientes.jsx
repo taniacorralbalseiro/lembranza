@@ -2,6 +2,9 @@ import { useState, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import * as actions from '../actions';
+import { Link } from 'react-router-dom';
+import * as selectors from '../selectors';
+
 
 const FindPacientes = () => {
   const [centroPublicId, setCentroPublicId] = useState('');
@@ -23,7 +26,15 @@ const FindPacientes = () => {
   };
 
   return (
+
     <div className="container mt-4" style={{ maxWidth: 500 }}>
+      <div className="d-flex align-items-center mb-3">
+        <h3 className="me-auto m-0">Pacientes</h3>
+
+        <Link to="/pacientes/nuevo" className="btn btn-primary">
+          + Nuevo paciente
+        </Link>
+      </div>
       <h2>Buscar pacientes por centro</h2>
       <form ref={formRef} className="needs-validation" noValidate onSubmit={handleSubmit}>
         <div className="mb-3">
