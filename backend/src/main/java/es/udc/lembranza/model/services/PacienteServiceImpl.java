@@ -114,4 +114,46 @@ public class PacienteServiceImpl implements PacienteService {
         return pacienteRepository.findByCentro_PublicId(centroPublicId, pageable);
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public Page<Paciente> findPacientesByNombre(String nombre, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("nombre").ascending());
+        return pacienteRepository.findByNombreContaining(nombre, pageable);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Page<Paciente> findPacientesByApellido(String apellido, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("apellidos").ascending());
+        return pacienteRepository.findByApellidosContaining(apellido, pageable);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Page<Paciente> findPacientesByNif(String nif, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("apellidos").ascending());
+        return pacienteRepository.findByNifContaining(nif, pageable);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Page<Paciente> findPacientesByEmail(String email, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("email").ascending());
+        return pacienteRepository.findByEmailContaining(email, pageable);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Page<Paciente> findPacientesByGrupoPublicId(UUID grupoPublicId, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("apellidos").ascending());
+        return pacienteRepository.findByGrupo_PublicId(grupoPublicId, pageable);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Page<Paciente> findPacientesAll(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("apellidos").ascending());
+        return pacienteRepository.findAll(pageable);
+    }
+
 }

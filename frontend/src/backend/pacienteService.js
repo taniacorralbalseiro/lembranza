@@ -12,34 +12,29 @@ export const get = (publicId) =>
 export const darDeBaja = (publicId) =>
   appFetch('DELETE', `/api/pacientes/${publicId}`);
 
+const normalizePage = (pageResponse) => ({
+  items: pageResponse?.content ?? [],
+  existMoreItems: pageResponse?.last === false,
+  totalElements: pageResponse?.totalElements ?? 0,
+  currentPage: pageResponse?.number ?? 0,
+});
+
 export const findByCentro = ({ centroPublicId, page = 0, size = 10 }, onSuccess) => {
   if (!centroPublicId) {
     return Promise.resolve({
       ok: false,
       status: 400,
-      payload: { globalError: 'centroPublicId requerido' }
+      payload: { globalError: 'centroPublicId requerido' },
     });
   }
 
-  const params = new URLSearchParams({
-    centroPublicId,
-    page: String(page),
-    size: String(size)
-  });
-
+  const params = new URLSearchParams({ centroPublicId, page: String(page), size: String(size) });
   const path = `/api/pacientes/por-centro?${params.toString()}`;
 
-  return appFetch('GET', path).then(resp => {
+  return appFetch('GET', path).then((resp) => {
     if (resp.ok) {
-      const p = resp.payload; // Page Spring
-      // Normalizamos para que el resto del frontend no tenga que saber de Spring Page
-      const normalized = {
-        items: p?.content ?? [],
-        existMoreItems: p?.last === false // si no es la última página
-      };
-      onSuccess?.(normalized);
-      // Además, por si quieres acceder a la Page original en algún punto:
-      resp.payload = normalized;
+      resp.payload = normalizePage(resp.payload);
+      onSuccess?.(resp.payload);
     }
     return resp;
   });

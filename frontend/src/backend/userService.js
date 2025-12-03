@@ -17,7 +17,7 @@ export async function loginFromServiceToken(token) {
     if (resp.ok && resp.payload?.token) {
         setServiceToken(resp.payload.token);
     }
-    return resp; // mismo formato
+    return resp;
 }
 
 export function logout() {

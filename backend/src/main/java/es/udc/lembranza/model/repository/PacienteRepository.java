@@ -25,6 +25,10 @@ public interface PacienteRepository extends JpaRepository<Paciente, Long> {
     boolean existsByPublicId(UUID publicId);
     void deleteByPublicId(UUID publicId);
 
+    Page<Paciente> findByNombreContaining(String nombre, Pageable pageable);
+    Page<Paciente> findByNifContaining(String nif, Pageable pageable);
+    Page<Paciente> findByEmailContaining(String email, Pageable pageable);
+    Page<Paciente> findByApellidosContaining(String apellido, Pageable pageable);
     Page<Paciente> findByCentro_PublicId(UUID centroPublicId, Pageable pageable);
     Page<Paciente> findByGrupo_PublicId(UUID grupoPublicId, Pageable pageable);
     Page<Paciente> findByCentro_PublicIdAndEstadoCuenta(UUID centroPublicId, EstadoCuenta estadoCuenta,

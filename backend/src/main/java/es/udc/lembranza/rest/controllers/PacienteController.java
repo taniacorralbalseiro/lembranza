@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.UUID;
 
 import static es.udc.lembranza.rest.dtos.PacienteConversor.toPacienteSummaryPage;
@@ -83,6 +84,17 @@ public class PacienteController {
         return PacienteConversor.toPacienteSummaryDto(p);
     }
 
+
+    @PreAuthorize("hasAnyRole('ADMIN','EMPLEADO')")
+    @GetMapping("/por-nombre")
+    public Page<PacienteSummaryDto> getPacientesPorNombre(
+            @RequestParam String nombre,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        var pacientes = pacienteService.findPacientesByNombre(nombre, page, size);
+        return toPacienteSummaryPage(pacientes);
+    }
+
     @PreAuthorize("hasAnyRole('ADMIN','EMPLEADO')")
     @GetMapping("/por-centro")
     public Page<PacienteSummaryDto> listarPorCentroPublicId(
@@ -90,6 +102,46 @@ public class PacienteController {
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) {
         var pacientes = pacienteService.findPacientesByCentroPublicId(centroPublicId, page, size);
+        return toPacienteSummaryPage(pacientes);
+    }
+
+    @PreAuthorize("hasAnyRole('ADMIN','EMPLEADO')")
+    @GetMapping("/por-grupo")
+    public Page<PacienteSummaryDto> listarPorGrupoPublicId(
+            @RequestParam UUID grupoPublicId,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        var pacientes = pacienteService.findPacientesByGrupoPublicId(grupoPublicId, page, size);
+        return toPacienteSummaryPage(pacientes);
+    }
+
+    @PreAuthorize("hasAnyRole('ADMIN','EMPLEADO')")
+    @GetMapping("/por-apellido")
+    public Page<PacienteSummaryDto> getPacientesPorApellido(
+            @RequestParam String apellido,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        var pacientes = pacienteService.findPacientesByApellido(apellido, page, size);
+        return toPacienteSummaryPage(pacientes);
+    }
+
+    @PreAuthorize("hasAnyRole('ADMIN','EMPLEADO')")
+    @GetMapping("/por-nif")
+    public Page<PacienteSummaryDto> getPacientesPorNif(
+            @RequestParam String nif,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        var pacientes = pacienteService.findPacientesByNif(nif, page, size);
+        return toPacienteSummaryPage(pacientes);
+    }
+
+    @PreAuthorize("hasAnyRole('ADMIN','EMPLEADO')")
+    @GetMapping("/por-email")
+    public Page<PacienteSummaryDto> getPacientesPorEmail(
+            @RequestParam String email,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        var pacientes = pacienteService.findPacientesByEmail(email, page, size);
         return toPacienteSummaryPage(pacientes);
     }
 

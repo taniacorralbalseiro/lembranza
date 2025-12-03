@@ -16,4 +16,10 @@ public interface PacienteService {
     public Page<Paciente> findPacientesByCentroId(Long centroId, int page, int size);
     Paciente getByPublicId(UUID publicId) throws InstanceNotFoundException;
     Page<Paciente> findPacientesByCentroPublicId(UUID centroPublicId, int page, int size);
+    Page<Paciente> findPacientesByNombre(String nombre, int page, int size);
+    Page<Paciente> findPacientesByApellido(String apellido, int page, int size);
+    Page<Paciente> findPacientesByNif(String nombre, int page, int size);
+    Page<Paciente> findPacientesByEmail(String email, int page, int size);
+    Page<Paciente> findPacientesByGrupoPublicId(UUID grupoPublicId, int page, int size);
+    Page<Paciente> findPacientesAll( int page, int size);
 }

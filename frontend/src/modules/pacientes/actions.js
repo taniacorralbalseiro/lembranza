@@ -63,10 +63,13 @@ export const updatePaciente = (publicId, dto, onSuccess, onErrors) => async (dis
 const deletePacienteCompleted = (publicId) => ({
   type: actionTypes.DELETE_PACIENTE_COMPLETED, publicId
 });
-export const darDeBajaPaciente = (publicId, onSuccess, onErrors) => (dispatch) =>
-  backend.pacienteService.darDeBaja(
-    publicId,
-    () => { dispatch(deletePacienteCompleted(publicId)); onSuccess?.(); },
-    (errs) => onErrors?.(errs)
-  );
+export const darDeBajaPaciente = (publicId, onSuccess, onErrors) => async (dispatch) => {
+  const res = await backend.pacienteService.darDeBaja(publicId);
+  if (res.ok) {
+    dispatch(deletePacienteCompleted(publicId));
+    onSuccess?.();
+  } else {
+    onErrors?.(res.payload);
+  }
+};
 
