@@ -35,6 +35,7 @@ public class AuthController {
 
         // Principal con authorities (roles)
         var userDetails = (UserDetails) authentication.getPrincipal();
+        var customDetails = userDetails instanceof CustomUserDetails details ? details : null;
 
         // Genera el JWT (Paso 4)
         var token = jwtService.generateToken(userDetails);
@@ -46,13 +47,16 @@ public class AuthController {
                 .map(GrantedAuthority::getAuthority)
                 .orElse("");
 
-        var user = UserSummaryDto.builder()
+      /*  var user = UserSummaryDto.builder()
                 .publicId(null) // completar si resuelves el Usuario
                 .nombre(null)
                 .apellidos(null)
                 .email(userDetails.getUsername())
                 .rol(role.replace("ROLE_", ""))
                 .build();
+
+       */
+        var user = buildUserSummary(customDetails, role, userDetails.getUsername());
 
         return ResponseEntity.ok(
                 AuthenticatedUserDto.builder()
@@ -72,6 +76,7 @@ public class AuthController {
 
         // 2) Cargar el usuario y validar token (firma + expiración + subject)
         var userDetails = customUserDetailService.loadUserByUsername(username);
+        var customDetails = userDetails instanceof CustomUserDetails details ? details : null;
         if (!jwtService.isTokenValid(req.token(), userDetails)) {
             // Semántica: si no es válido → 401
             return ResponseEntity.status(401).build();
@@ -80,7 +85,7 @@ public class AuthController {
         // 3) Como en los apuntes: devolvemos EL MISMO token + el usuario
         var role = userDetails.getAuthorities().stream().findFirst().map(GrantedAuthority::getAuthority).orElse("");
 
-        var user = UserSummaryDto.builder()
+        /*var user = UserSummaryDto.builder()
                 .publicId(null)  // completar si resuelves el Usuario (punto 3)
                 .nombre(null)
                 .apellidos(null)
@@ -88,6 +93,8 @@ public class AuthController {
                 .rol(role.replace("ROLE_", ""))
                 .build();
 
+         */
+        var user = buildUserSummary(customDetails, role, userDetails.getUsername());
         return ResponseEntity.ok(
                 AuthenticatedUserDto.builder()
                         .token(req.token())                      // <-- mismo token
@@ -96,5 +103,25 @@ public class AuthController {
                         .user(user)
                         .build()
         );
+    }
+
+    private UserSummaryDto buildUserSummary(CustomUserDetails details, String role, String fallbackEmail) {
+        if (details == null) {
+            return UserSummaryDto.builder()
+                    .publicId(null)
+                    .nombre(null)
+                    .apellidos(null)
+                    .email(fallbackEmail)
+                    .rol(role.replace("ROLE_", ""))
+                    .build();
+        }
+
+        return UserSummaryDto.builder()
+                .publicId(details.getPublicId())
+                .nombre(details.getNombre())
+                .apellidos(details.getApellidos())
+                .email(details.getEmail())
+                .rol(role.replace("ROLE_", ""))
+                .build();
     }
 }

@@ -2,19 +2,14 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import users from '../../users';
+import Home from './Home';
 import { Login } from '../../users';
 import {FindPacientes, FindPacientesResult, PacienteDetails, PacienteCreate, PacienteEdit} from "../../pacientes/index.js";
 
-const Home = () => (
-    <div className="container mt-5 text-center">
-        <h2>Bienvenido a Lembranza</h2>
-        <p>Todo OK ✅</p>
-    </div>
-);
 
 const Body = () => {
-    const loggedIn = useSelector(users.selectors.isLoggedIn);
-
+  const loggedIn = useSelector(users.selectors.isLoggedIn);
+  const isEmpleado = useSelector(users.selectors.isEmpleado);
     return (
         <div className="container mt-4">
             <Routes>
@@ -23,7 +18,7 @@ const Body = () => {
               {!loggedIn && <Route path="/login" element={<Login />} />}
 
               {/* Rutas privadas de Pacientes (solo si estás logueada) */}
-              {loggedIn && <Route path="/pacientes/buscar" element={<FindPacientes />} />}
+              {loggedIn && isEmpleado && <Route path="/pacientes/buscar" element={<FindPacientes />} />}
               {loggedIn && <Route path="/pacientes/resultado" element={<FindPacientesResult />} />}
               {loggedIn && <Route path="/pacientes/detalle/:publicId" element={<PacienteDetails />} />}
               {loggedIn && (

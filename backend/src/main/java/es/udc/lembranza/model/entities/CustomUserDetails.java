@@ -47,5 +47,11 @@ public class CustomUserDetails implements UserDetails {
     public UUID getPublicId() { return usuario.getPublicId(); }
 
     public RolUsuario getRol() { return usuario.getRolUsuario(); }
+
+    public String getNombre() { return usuario.getNombre(); }
+
+    public String getApellidos() { return usuario.getApellidos(); }
+
+    public String getEmail() { return usuario.getEmail(); }
 }
 

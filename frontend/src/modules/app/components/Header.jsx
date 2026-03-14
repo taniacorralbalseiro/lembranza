@@ -6,7 +6,11 @@ const Header = () => {
   const dispatch = useDispatch();
   const loggedIn = useSelector(users.selectors.isLoggedIn);
   const userName = useSelector(users.selectors.getUserName);
+  const isEmpleado = useSelector(users.selectors.isEmpleado);
+  const user = useSelector(users.selectors.getUser);
 
+  console.log(user);
+  console.log('isEmpleado', isEmpleado);
   const handleLogout = () => dispatch(users.actions.logout());
 
   return (

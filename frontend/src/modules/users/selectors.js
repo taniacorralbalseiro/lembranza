@@ -7,6 +7,8 @@ export const getUser = (state) => getModuleState(state).authenticatedUser;
 // ¿Hay sesión?
 export const isLoggedIn = (state) => Boolean(getUser(state));
 
+export const isEmpleado = (state) =>
+  getUser(state)?.rol === "EMPLEADO";
 // Campos de utilidad (defensivos por si backend aún no los manda)
 export const getUserName   = (state) => getUser(state)?.nombre ?? getUser(state)?.email ?? null;
 export const getUserEmail  = (state) => getUser(state)?.email ?? null;

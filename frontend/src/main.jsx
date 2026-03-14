@@ -18,7 +18,7 @@ import { getServiceToken, init as initAppFetch } from './backend/appFetch';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap';
 import NetworkError from "./backend/NetworkError.js";
-
+import './index.css';
 // 1) Callback global ante errores de red (5xx / conexión)
 initAppFetch(() => {
     store.dispatch(app.actions.error(new NetworkError()));
